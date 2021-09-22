@@ -53,6 +53,11 @@ RSpec.describe 'Api::Posts', type: :request do
         values = values_from_json('id')
         expect(values).to eq(values.sort)
       end
+
+      it 'should have required keys in response' do
+        expect(json['posts'][0].keys).to contain_exactly('author', 'authorId', 'id',
+                                                         'likes', 'popularity', 'reads', 'tags')
+      end
     end
 
     context 'when sortBy is reads' do

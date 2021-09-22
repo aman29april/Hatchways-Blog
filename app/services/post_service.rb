@@ -13,22 +13,18 @@ class PostService
   end
 
   def validate
-    fail!(I18n.t('error.posts.params.sort')) if @tags.empty?
+    fail!(I18n.t('error.posts.params.tags')) if @tags.empty?
   end
 
   def call
     posts = {}
     @tags.map do |tag|
+      # get result from cache or api
       json = Rails.cache.fetch(tag, expires: CACHE_POLICY) do
         get_posts_of_tag(tag)
       end
 
-      json['posts'].map do |post|
-        id = post['id']
-        next if posts.has_key? id
-
-        posts[id] = post
-      end
+      add_posts_to_result(json, posts)
     end
 
     @posts = @transformer.transform(posts.values)
@@ -44,6 +40,16 @@ class PostService
 
   private
 
+  def add_posts_to_result(json, posts)
+    json['posts'].map do |post|
+      id = post['id']
+      next if posts.has_key? id
+
+      posts[id] = post
+    end
+  end
+
+  # get posts for a tag using an API Call
   def get_posts_of_tag(tag)
     get_url = "#{BASE_URL}/api/assessment/blog/posts"
     params = {

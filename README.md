@@ -15,6 +15,8 @@ Navigate to project directory and follow following commands
 
 `bundle install` will install all the required gems.
 
+`rake db:create` to create database (Though we don't need db for this app. As i didn't skip active record/db installation on new app creation, It is needed due to dependency.)
+
 `rails server` Rails Server will start and you can visit `localhost:3000` in your web browser.
 
 ### Running Tests
@@ -23,7 +25,7 @@ Run `rails spec` command from project folder.
 #Design
 - `PostController` is doing param validations and return error message if params are not in correct format.
 - `PostService` is responsible for calling external api, transform the results and return back.
-    - The Service take tags and transformer as input parameters 
+    - The Service take `tags` and transformer as input parameters 
     - API response are `cached`, key is the tag with expiry of `1 day`
     - To merge response of multiple tags, I am using `hash` as data structure. Post id is the key used. 
       - Hash has search with constant order, hence its efficient to find if we have already included the post in output.
@@ -31,9 +33,12 @@ Run `rails spec` command from project folder.
 - For `Caching`, I am using Rails cache to store the output of the external API.
   - Right now the cache store is default store. We can changed it to Redis, Memcache or any other.
 - Used `Rspec` for testing the API response
+  - To verify the response when parameters passed are correct, I am checking the response code and the sort order of the values.
       
 
 ##Checklist
+
+**All points mentioned have been covered in the submission**
 
 -[x] ~~An /api/posts route that handles the following query parameters:~~
     -[x] tags (mandatory) : any number of comma-separated strings
