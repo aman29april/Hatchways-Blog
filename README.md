@@ -11,6 +11,9 @@ Live demo can be found at https://stormy-beyond-46831.herokuapp.com/
 
 ### Running Locally
 Make sure above requirements are fulfilled before running this application.
+
+`git clone blog-api.bundle` **Extract bundle file**
+
 Navigate to project directory and follow following commands
 
 `bundle install` will install all the required gems.
